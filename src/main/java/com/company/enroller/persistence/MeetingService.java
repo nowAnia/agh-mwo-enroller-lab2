@@ -18,6 +18,7 @@ public class MeetingService {
 	public MeetingService() {
 	//	session = DatabaseConnector.getInstance().getSession();
 			connector = DatabaseConnector.getInstance();
+			this.session = connector.getSession();
 
 	}
 
@@ -32,10 +33,11 @@ public class MeetingService {
 			return connector.getSession().get(Meeting.class, id);
 	}
 
-	public String findByTitle(String title) {
-		String hql = "FROM Meeting WHERE title ="+ title+"";
-		Query query = this.session.createQuery(hql);
-		return query.uniqueResult().toString();
+	public Collection<Meeting> findByTitle(String title) {
+		String hql = "FROM Meeting WHERE title =:title";
+		Query query = this.connector.getSession().createQuery(hql);
+		query.setParameter("title", title);
+		return query.list();
 	}
 
 	public Meeting add(Meeting meeting) {
@@ -45,4 +47,9 @@ public class MeetingService {
 		return meeting;
 	}
 
+	public void delete(Meeting meeting) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().delete(meeting);
+		transaction.commit();
+	}
 }
