@@ -52,4 +52,10 @@ public class MeetingService {
 		connector.getSession().delete(meeting);
 		transaction.commit();
 	}
+
+	public void update(Meeting meeting) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().merge(meeting);
+		transaction.commit();
+	}
 }
