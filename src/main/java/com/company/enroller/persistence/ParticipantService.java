@@ -6,6 +6,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 
 @Component("participantService")
 public class ParticipantService {
@@ -16,8 +17,18 @@ public class ParticipantService {
         connector = DatabaseConnector.getInstance();
     }
 
-    public Collection<Participant> getAll() {
+    public Collection<Participant> getAll(String sortOrder, String key) {
         String hql = "FROM Participant";
+
+        if (key != null && !"".equals(key)) {
+            hql += " WHERE login like '%" + key +"%'" ;
+        }
+
+        if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+            hql += " ORDER BY login "+ sortOrder;
+            System.out.println(hql);
+        }
+
         Query query = connector.getSession().createQuery(hql);
         return query.list();
     }
@@ -44,5 +55,6 @@ public class ParticipantService {
         connector.getSession().delete(participant);
         transaction.commit();
     }
+
 
 }
