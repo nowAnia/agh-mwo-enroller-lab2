@@ -14,6 +14,7 @@ public class ParticipantService {
     DatabaseConnector connector;
 
     public ParticipantService() {
+
         connector = DatabaseConnector.getInstance();
     }
 
