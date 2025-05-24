@@ -31,6 +31,7 @@ public class Participant {
 		return password;
 	}
 
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
